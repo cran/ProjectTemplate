@@ -1,0 +1,26 @@
+digraph relationships {
+
+  "data" -> "munge";
+  "munge" -> "cache";
+  "data" -> "diagnostics";
+  "data" -> "src";
+  "cache" -> "src";
+  "munge" -> "src";
+  "src" -> "profiling";
+  "src" -> "tests";
+  "src" -> "graphs";
+  "src" -> "reports";
+  "src" -> "logs";
+}
+
+digraph workflow1 {
+  "data" -> "cache" -> "src";
+}
+
+digraph workflow2 {
+  "cache" -> "src";
+}
+
+digraph workflow1 {
+  "data" -> "src";
+}

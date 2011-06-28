@@ -1,16 +1,25 @@
-(1) Debate integrating log4r and automatically loading it.
-
-(2) Need to create a show.updates() function that provides a way to merge new defaults into an existing project generated using an earlier version of ProjectTemplate. Decide on proper name. update.project conflicts with
-an existing generic method.
-
-(3) Debate renaming run.tests() to test.project() permanently.
-
-(4) Should we automatically run test.project() during load.project()?
-
-(5) show.updates() won't work on Windows systems.
-
-(6) show.updates() should offer to replace file after noticing a change.
-
-(7) All sample .zip files were corrupt. Need proper samples for testing.
-
-(8) Need sample SPSS and Stata files for testing.
+* Improve unit tests for `*.reader` functions.
+* Get sample data files in `*.zip` format.
+* Get sample data file in `.sav` format.
+* Get sample data file in `.dta` format.
+* Get sample data file in `.arff` format.
+* Get sample data file in `.dbf` format.
+* Get sample data file in `.rec` format.
+* Get sample data file in `.mtp` format.
+* Get sample data file in `.m` format.
+* Get sample data file in `.sys` format.
+* Get sample data file in `.syd` format.
+* Get sample data file in `.xport` format.
+* Get sample data file in `.sas` format.
+* Find a way to unit test MySQL support.
+* Add `create.project(dump = TRUE)` feature.
+* Document possible data pipelines through `data` and `cache`.
+* Rename `run.tests()` to `test.project()` permanently.
+* Create a `show.updates()` function.
+* Create a `cache.project()` function.
+* Create a `stub.tests()` function.
+* Clean up DB code.
+* Maintain a record of all loaded data sets.
+* Decide between gdata or xlsxjars for Excel support.
+* Add ability to fetch all tables from a SQLite3 database.
+* Add support for `.db` extension? Fetch entire database?

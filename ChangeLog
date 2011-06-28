@@ -1,3 +1,44 @@
+2011-06-28	John Myles White  <jmw@johnmyleswhite.com>
+ 
+* v0.3-3
+* Added a reload.project() function.
+* Improved error handling.
+* Renamed utilities.R to helpers.R.
+* Fixed a bug in cache().
+
+2011-06-27	John Myles White  <jmw@johnmyleswhite.com>
+ 
+* v0.3-2
+* Added new *Reader functions.
+
+2011-06-24	John Myles White  <jmw@johnmyleswhite.com>
+ 
+* v0.3-1
+* Switched configuration system over to DCF format.
+* Ability to create full projects or minimal projects.
+* Switched print() calls to message() calls.
+* Moved *Reader functionality into separate functions that users can override.
+* Fixed a bug in cache().
+
+2010-12-03	John Myles White  <jmw@johnmyleswhite.com>
+ 
+* v0.2-1
+* Moved boot.R's logic into functions and configuration files.
+* Added SQLite support using the RSQLite package.
+* Cleaned up the database connection and disconnection code.
+* Changed list of packages listed as dependencies, so that even more are suggestions.
+* Added new configuration settings in config/global.yaml.
+* Data is now loaded from a cache/ directory and then the traditional data/ directory.
+* Added log4r integration, which is configurable and turned off by default.
+* Added a sample preprocessing script.
+* Added a cache/ directory.
+* Added a config/ directory.
+* Added a logs/ directory.
+* Added a munge/ directory.
+* Added a src/ directory.
+* Fixed a bug in clean.variable.name() for variable names that start with numbers.
+* Added XSLX support.
+
 2010-10-02	John Myles White  <jmw@johnmyleswhite.com>
  
 * v0.1-3

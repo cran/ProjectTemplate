@@ -1,4 +1,4 @@
-create.project <- function(project.name)
+create.project <- function(project.name, minimal = FALSE, dump = FALSE)
 {
   tmp.dir <- paste(project.name, '_tmp', sep = '')
 
@@ -6,15 +6,30 @@ create.project <- function(project.name)
   {
     stop(paste("Cannot run create.project() from a directory containing", project.name, "or", tmp.dir))
   }
-  
+
   dir.create(tmp.dir)
+
+  if (minimal)
+  {
+    file.copy(system.file(file.path('defaults', 'minimal'), package = 'ProjectTemplate'),
+              file.path(tmp.dir),
+              recursive = TRUE)
+    file.rename(file.path(tmp.dir, 'minimal'),
+                project.name)
+  }
+  else
+  {
+    file.copy(system.file(file.path('defaults', 'full'), package = 'ProjectTemplate'),
+              file.path(tmp.dir),
+              recursive = TRUE)
+    file.rename(file.path(tmp.dir, 'full'),
+                project.name)
+  }
   
-  file.copy(system.file('defaults', package = 'ProjectTemplate'),
-            file.path(tmp.dir),
-            recursive = TRUE)
-            
-  file.rename(file.path(tmp.dir, 'defaults'),
-              project.name)
-  
+  if (dump)
+  {
+    1; # Magic happens here to place all of the R files from ProjectTemplate in the current folder.
+  }
+
   unlink(tmp.dir, recursive = TRUE)
 }
