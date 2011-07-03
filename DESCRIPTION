@@ -1,8 +1,8 @@
 Package: ProjectTemplate
 Type: Package
 Title: Automates the creation of new statistical analysis projects.
-Version: 0.3-3
-Date: 2011-06-28
+Version: 0.3-4
+Date: 2011-07-03
 Author: John Myles White
 Maintainer: John Myles White <jmw@johnmyleswhite.com>
 Description: ProjectTemplate provides functions to automatically build
@@ -16,13 +16,14 @@ Suggests: foreign, reshape, plyr, stringr, ggplot2, lubridate, log4r,
         RMySQL, RSQLite, xlsx, gdata, RODBC
 URL: http://projecttemplate.net
 Collate: cache.R cache.name.R clean.variable.name.R create.project.R
-        load.project.R reload.project.R run.project.R run.tests.R
-        translate.dcf.R arff.reader.R csv.reader.R dbf.reader.R
-        epiinfo.reader.R mtp.reader.R octave.reader.R r.reader.R
+        load.project.R reload.project.R run.project.R show.project.R
+        stub.tests.R test.project.R translate.dcf.R arff.reader.R
+        csv.reader.R db.reader.R dbf.reader.R epiinfo.reader.R
+        file.reader.R mtp.reader.R octave.reader.R r.reader.R
         rdata.reader.R spss.reader.R sql.reader.R stata.reader.R
         systat.reader.R tsv.reader.R url.reader.R wsv.reader.R
         xls.reader.R xlsx.reader.R xport.reader.R
         extensions.dispatch.table.R
-Packaged: 2011-07-01 20:12:07 UTC; johnmyleswhite
+Packaged: 2011-07-03 15:44:58 UTC; johnmyleswhite
 Repository: CRAN
-Date/Publication: 2011-07-02 14:19:10
+Date/Publication: 2011-07-04 08:22:58
