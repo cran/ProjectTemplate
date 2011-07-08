@@ -1,3 +1,16 @@
+#' Automatically load data and packages for a project.
+#'
+#' This function automatically load all of the data and packages used by
+#' the project from which it is called.
+#'
+#' @return No value is returned; this function is called for its side effects.
+#'
+#' @export
+#'
+#' @examples
+#' library('ProjectTemplate')
+#'
+#' #load.project()
 load.project <- function()
 {
   project.info <- list()
@@ -15,6 +28,11 @@ load.project <- function()
   config[['libraries']] <- strsplit(config[['libraries']], '\\s*,\\s*')[[1]]
   assign('config', config, envir = .GlobalEnv)
   project.info[['config']] <- config
+  
+  if (! is.null(config[['as_factors']]) && config[['as_factors']] == 'off')
+  {
+    options(stringsAsFactors = FALSE)
+  }
   
   if (file.exists('lib'))
   {
@@ -156,6 +174,24 @@ load.project <- function()
     }
   }
 
+  if (! is.null(config[['data_tables']]) && config[['data_tables']] == 'on')
+  {
+    library('data.table')
+    
+    for (data.set in project.info[['data']])
+    {
+      message('Converting data.frames to data.tables')
+      
+      if (class(get(data.set, envir = .GlobalEnv)) == 'data.frame')
+      {
+        message(paste(' Translating data.frame:', data.set))
+        assign(data.set,
+               data.table(get(data.set, envir = .GlobalEnv)),
+               envir = .GlobalEnv)
+      }
+    }
+  }
+
   if (is.null(config[['munging']]))
   {
     warning('Your configuration file is missing an entry: munging')
@@ -165,8 +201,11 @@ load.project <- function()
     message('Munging data')
     for (preprocessing.script in sort(dir('munge')))
     {
-      message(paste(' Running preprocessing script:', preprocessing.script))
-      source(file.path('munge', preprocessing.script))
+      if (grepl('\\.R$', preprocessing.script, ignore.case = TRUE))
+      {
+        message(paste(' Running preprocessing script:', preprocessing.script))
+        source(file.path('munge', preprocessing.script))
+      }
     }
   }
 
@@ -183,12 +222,12 @@ load.project <- function()
     {
       dir.create('logs')
     }
-    # Need to think about why this didn't work in the naive way.
-    # Something about how `level<-` works.
     logfile(logger) <- file.path('logs', 'project.log')
     level(logger) <- log4r:::INFO
     assign('logger', logger, envir = .GlobalEnv)
   }
-  
+
   assign('project.info', project.info, envir = .GlobalEnv)
+  #assign('project.info', project.info, envir = parent.frame())
+  #assign('project.info', project.info, envir = environment(ProjectTemplate:::create.project))
 }

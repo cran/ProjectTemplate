@@ -1,12 +1,30 @@
+#' Read a remote file described in a .url file.
+#'
+#' This function will load data from a remote source accessible through
+#' HTTP or FTP based on configuration information found in the specified
+#' .url file. The .url file must specify the URL of the remote data source
+#' and the type of data that is available remotely. Only one data source
+#' per .url file is supported currently.
+#'
+#' Examples of the DCF format and settings used in a .url file are shown
+#' below:
+#'
+#' Example 1
+#' url: http://www.johnmyleswhite.com/ProjectTemplate/sample_data.csv
+#' separator: ,
+#'
+#' @param data.file The name of the data file to be read.
+#' @param filename The path to the data set to be loaded.
+#' @param variable.name The name to be assigned to in the global environment.
+#'
+#' @return No value is returned; this function is called for its side effects.
+#'
+#' @examples
+#' library('ProjectTemplate')
+#'
+#' #url.reader('example.url', 'data/example.url', 'example')
 url.reader <- function(data.file, filename, variable.name)
 {
-  # A .url file contains DCF describing the data source.
-  # Only one data source per file is supported.
-  # An example file is shown below.
-  #
-  # url: http://www.johnmyleswhite.com/ProjectTemplate/sample_data.csv
-  # separator: ,
-
   url.info <- ProjectTemplate:::translate.dcf(filename)
 
   file.type <- ""
