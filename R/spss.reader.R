@@ -13,16 +13,12 @@
 #' @examples
 #' library('ProjectTemplate')
 #'
-#' #spss.reader('example.sav', 'data/example.sav', 'example')
+#' \dontrun{spss.reader('example.sav', 'data/example.sav', 'example')}
 spss.reader <- function(data.file, filename, variable.name)
 {
   library('foreign')
 
-  #assign(variable.name,
-  #       read.spss(filename),
-  #       envir = .GlobalEnv)
-
   assign(variable.name,
-         as.data.frame(read.spss(filename)),
+         read.spss(filename, to.data.frame = TRUE),
          envir = .GlobalEnv)
 }

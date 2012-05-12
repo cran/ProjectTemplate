@@ -12,17 +12,18 @@
 ## Database Autoloading
 * Find a way to unit test MySQL support.
 * Clean up DB code in `sql.reader.R`.
-
+* Improve ODBC support.
+* Add JDBC support.
+ 
 ## Allow Users to Dump Static Project
 * Add `create.project(dump = TRUE)` feature.
 
 ## Documentation
-* Find out to create `dontrun` examples using roxygen.
-* Find out how to control `Collate:` statement using devtools.
+* Document `cache_loading` setting.
 * Document possible data pipelines through `data` and `cache`.
 * Produce a screencast featuring SQLite and SPSS autoloading and letters data.
 * Document overriding a default reader.
-* Show users how to install ProjectTemplate from GitHub using devtools.
+* Create a tarball of the final state of the walkthrough project for the intro tutorial.
 
 ## Internal State
 * `cache.project()` needs to deal with tools that generate data sets that don't meet naming conventions: e.g. `.db` files.
@@ -43,6 +44,13 @@
 * Make `data.table` integration more powerful.
 * Integrate `sqldf`?
 * Integrate `bigmemory` or `ff`?
+* Automatic date conversion using lubridate.
 
 ## Cache Changes?
 * Invalidate a file in `cache` if the matching file in `data` is more recently modified?
+
+## Scaffolding
+* Compact directories.
+* .gitignore, .gitkeep
+
+* CSV quote character control.

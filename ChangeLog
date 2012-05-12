@@ -1,3 +1,23 @@
+2012-05-12	John Myles White  <jmw@johnmyleswhite.com>
+
+* v0.4-2
+* Had to disable xlsx.reader temporarily because it does not build for 2.15.
+
+2011-11-23	John Myles White  <jmw@johnmyleswhite.com>
+
+* v0.4-1
+* Added 'eda.R' example file in 'src/' directory.
+* Allow loading from 'cache/' without loading from 'data/' through 'cache_loading' setting.
+* Revised documentation.
+
+2011-07-13	John Myles White  <jmw@johnmyleswhite.com>
+
+* v0.3-6
+* Added Postgres support through RPostgreSQL
+* Very rough ODBC support. See example in ProjectTemplate:::sql.reader documentation.
+* '.dat' files are now read as if they were '.wsv' files.
+* Revised documentation.
+
 2011-07-08	John Myles White  <jmw@johnmyleswhite.com>
 
 * v0.3-5

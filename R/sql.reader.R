@@ -18,19 +18,45 @@
 #' table: sample_table
 #'
 #' Example 2
-#' type: sqlite
-#' dbname: /path/to/sample_database
+#' type: mysql
+#' user: sample_user
+#' password: sample_password
+#' host: localhost
+#' port: 3306
+#' socket: /Applications/MAMP/tmp/mysql/mysql.sock
+#' dbname: sample_database
 #' table: sample_table
 #'
 #' Example 3
 #' type: sqlite
 #' dbname: /path/to/sample_database
-#' query: SELECT * FROM users WHERE user_active == 1
+#' table: sample_table
 #'
 #' Example 4
 #' type: sqlite
 #' dbname: /path/to/sample_database
+#' query: SELECT * FROM users WHERE user_active == 1
+#'
+#' Example 5
+#' type: sqlite
+#' dbname: /path/to/sample_database
 #' table: *
+#'
+#' Example 6
+#' type: postgres
+#' user: sample_user
+#' password: sample_password
+#' host: localhost
+#' dbname: sample_database
+#' table: sample_table
+#'
+#' Example 7
+#' type: odbc
+#' dsn: sample_dsn
+#' user: sample_user
+#' password: sample_password
+#' dbname: sample_database
+#' query: SELECT * FROM sample_table
 #'
 #' @param data.file The name of the data file to be read.
 #' @param filename The path to the data set to be loaded.
@@ -41,14 +67,14 @@
 #' @examples
 #' library('ProjectTemplate')
 #'
-#' #sql.reader('example.sql', 'data/example.sql', 'example')
+#' \dontrun{sql.reader('example.sql', 'data/example.sql', 'example')}
 sql.reader <- function(data.file, filename, variable.name)
 {
   database.info <- ProjectTemplate:::translate.dcf(filename)
 
-  if (! (database.info[['type']] %in% c('mysql', 'sqlite', 'odbc')))
+  if (! (database.info[['type']] %in% c('mysql', 'sqlite', 'odbc', 'postgres')))
   {
-    warning('Only databases reachable through RMySQL, RSQLite and RODBC are currently supported.')
+    warning('Only databases reachable through RMySQL, RSQLite, RODBC or RPostgreSQL are currently supported.')
     assign(variable.name,
            NULL,
            envir = .GlobalEnv)
@@ -59,25 +85,38 @@ sql.reader <- function(data.file, filename, variable.name)
   if (database.info[['type']] == 'odbc')
   {
     library('RODBC')
-    connection <- odbcConnect(database.info[['dbname']])
-    sqlQuery(connection, database.info[['query']])
-    results <- sqlGetResults(connection, as.is = TRUE)
+    connection.string <- paste('DSN=', database.info[['dsn']], ';',
+                               'UID=', database.info[['user']], ';',
+                               'PWD=', database.info[['password']], ';',
+                               'DATABASE=', database.info['dbname'],
+                               sep = '')
+    connection <- odbcDriverConnect(connection.string)
+    results <- sqlQuery(connection, database.info[['query']])
     odbcClose(connection)
     assign(variable.name,
            results,
            envir = .GlobalEnv)
+    return()
   }
   
   if (database.info[['type']] == 'mysql')
   {
     library('RMySQL')
     mysql.driver <- dbDriver("MySQL")
-
+    
+    # Default value for 'port' in mysqlNewConnection is 0.
+    if (is.null(database.info[['port']]))
+    {
+      database.info[['port']] <- 0
+    }
+    
     connection <- dbConnect(mysql.driver,
                             user = database.info[['user']],
                             password = database.info[['password']],
                             host = database.info[['host']],
-                            dbname = database.info[['dbname']])
+                            dbname = database.info[['dbname']],
+                            port = database.info[['port']],
+                            unix.socket = database.info[['socket']])
   }
 
   if (database.info[['type']] == 'sqlite')
@@ -86,6 +125,18 @@ sql.reader <- function(data.file, filename, variable.name)
     sqlite.driver <- dbDriver("SQLite")
 
     connection <- dbConnect(sqlite.driver,
+                            dbname = database.info[['dbname']])
+  }
+
+  if (database.info[['type']] == 'postgres')
+  {
+    library('RPostgreSQL')
+    mysql.driver <- dbDriver("PostgreSQL")
+
+    connection <- dbConnect(mysql.driver,
+                            user = database.info[['user']],
+                            password = database.info[['password']],
+                            host = database.info[['host']],
                             dbname = database.info[['dbname']])
   }
 
