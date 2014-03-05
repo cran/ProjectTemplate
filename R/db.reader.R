@@ -17,7 +17,8 @@
 #' \dontrun{db.reader('example.db', 'data/example.db', 'example')}
 db.reader <- function(data.file, filename, variable.name)
 {
-  library('RSQLite')
+  require.package('RSQLite')
+
   sqlite.driver <- dbDriver("SQLite")
   connection <- dbConnect(sqlite.driver,
                           dbname = filename)
@@ -28,12 +29,12 @@ db.reader <- function(data.file, filename, variable.name)
     message(paste('  Loading table:', table))
     
     data.parcel <- dbReadTable(connection,
-	                             table,
-	                             row.names = NULL)
-	  
-	  assign(ProjectTemplate:::clean.variable.name(table),
-	         data.parcel,
-	         envir = .GlobalEnv)
+                               table,
+                               row.names = NULL)
+    
+    assign(clean.variable.name(table),
+           data.parcel,
+           envir = .TargetEnv)
   }
 
   disconnect.success <- dbDisconnect(connection)

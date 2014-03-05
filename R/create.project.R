@@ -18,50 +18,49 @@
 #' @param dump A boolean value indicating whether the entire functionality
 #'   of ProjectTemplate should be written out to flat files in the current
 #'   project.
+#' @param merge.strategy What should happen if the target directory exists and
+#'   is not empty?
+#'   If \code{"force.empty"}, the target directory must be empty;
+#'   if \code{"allow.non.conflict"}, the method succeeds if no files or
+#'   directories with the same name exist in the target directory.
 #'
 #' @return No value is returned; this function is called for its side effects.
 #'
+#' @details  If the target directory does not exist, it is created.  Otherwise,
+#'   it can only contain files and directories allowed by the merge strategy.
+#'   
+#' @seealso \code{\link{load.project}}, \code{\link{get.project}},
+#'   \code{\link{cache.project}}, \code{\link{show.project}}
+#' 
 #' @export
 #'
 #' @examples
 #' library('ProjectTemplate')
 #'
 #' \dontrun{create.project('MyProject')}
-create.project <- function(project.name = 'new-project', minimal = FALSE, dump = FALSE)
+create.project <- function(project.name = 'new-project', minimal = FALSE,
+                           dump = FALSE, merge.strategy = c("require.empty", "allow.non.conflict"))
 {
-  tmp.dir <- paste(project.name, '_tmp', sep = '')
+  template.name <- if (minimal) 'minimal' else 'full'
+  temp.dir <- tempfile("ProjectTemplate")
+  on.exit(unlink(temp.dir, recursive = TRUE), add = TRUE)
+  untar(.get.template.tar.path(template.name), exdir = temp.dir,
+        tar = "internal")
+  template.path <- file.path(temp.dir, template.name)
 
-  if (file.exists(project.name) || file.exists(tmp.dir))
-  {
-    stop(paste("Cannot run create.project() from a directory containing", project.name, "or", tmp.dir))
-  }
+  merge.strategy <- match.arg(merge.strategy)
+  if (file.exists(project.name) && file.info(project.name)$isdir) {
+    .create.project.existing(template.path, project.name, merge.strategy)
+  } else
+    .create.project.new(template.path, project.name)
 
-  dir.create(tmp.dir)
-
-  if (minimal)
-  {
-    file.copy(system.file(file.path('defaults', 'minimal'), package = 'ProjectTemplate'),
-              file.path(tmp.dir),
-              recursive = TRUE)
-    file.rename(file.path(tmp.dir, 'minimal'),
-                project.name)
-  }
-  else
-  {
-    file.copy(system.file(file.path('defaults', 'full'), package = 'ProjectTemplate'),
-              file.path(tmp.dir),
-              recursive = TRUE)
-    file.rename(file.path(tmp.dir, 'full'),
-                project.name)
-  }
-  
   if (dump)
   {
     1; # Magic happens here to place all of the R files from ProjectTemplate in the current folder.
 
     # For time being, just copy the entire contents of defaults/* and then also copy the collated R source.
     # Seriously broken at the moment.
-    e <- environment(ProjectTemplate:::load.project)
+    e <- environment(load.project)
     
     pt.contents <- ls(e)
     
@@ -72,5 +71,58 @@ create.project <- function(project.name = 'new-project', minimal = FALSE, dump =
     }
   }
 
-  unlink(tmp.dir, recursive = TRUE)
+  invisible(NULL)
+}
+
+.create.project.existing <- function(template.path, project.name,
+                                     merge.strategy) {
+  template.files <- list.files(path = template.path, all.files = TRUE,
+                               include.dirs = TRUE, no.. = TRUE)
+
+  project.path <- file.path(project.name)
+
+  switch(
+    merge.strategy,
+    require.empty={
+      if (!.dir.empty(project.path))
+        stop(paste("Directory", project.path,
+                   "not empty.  Use merge.strategy = 'allow.non.conflict' to override."))
+    },
+    allow.non.conflict={
+      target.file.exists <- file.exists(file.path(project.path, template.files))
+      if (any(target.file.exists))
+        stop(paste("Creating a project in ", project.path,
+                   " would overwrite the following existing files/directories:\n",
+                   paste(template.files[target.file.exists], collapse=', ')))
+    },
+    stop("Invalid value for merge.strategy:", merge.strategy))
+
+  file.copy(file.path(template.path, template.files),
+            project.path,
+            recursive = TRUE, overwrite = FALSE)
+}
+
+.create.project.new <- function(template.path, project.name) {
+  if (file.exists(project.name)) {
+    stop(paste("Cannot run create.project() from a directory containing", project.name))
+  }
+
+  dir.create(project.name)
+  tryCatch(
+    .create.project.existing(template.path = template.path,
+                             project.name = project.name,
+                             merge.strategy = "require.empty"),
+    error = function(e) {
+      unlink(project.name, recursive = TRUE)
+      stop(e)
+    }
+  )
+}
+
+.get.template.tar.path <- function(template.name)
+  system.file(file.path('defaults', paste0(template.name, ".tar")), package = 'ProjectTemplate')
+
+.dir.empty <- function(path) {
+  length(list.files(path = path, all.files = TRUE, include.dirs = TRUE,
+                    no.. = TRUE)) == 0
 }

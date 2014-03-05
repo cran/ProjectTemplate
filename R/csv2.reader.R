@@ -1,6 +1,6 @@
-#' Read a comma separated values (.csv) file.
+#' Read a semicolon separated values (.csv2) file.
 #'
-#' This function will load a data set stored in the CSV file format into
+#' This function will load a data set stored in the CSV2 file format into
 #' the specified global variable binding.
 #'
 #' @param data.file The name of the data file to be read.
@@ -12,8 +12,8 @@
 #' @examples
 #' library('ProjectTemplate')
 #'
-#' \dontrun{csv.reader('example.csv', 'data/example.csv', 'example')}
-csv.reader <- function(data.file, filename, variable.name)
+#' \dontrun{csv2.reader('example.csv2', 'data/example.csv2', 'example')}
+csv2.reader <- function(data.file, filename, variable.name)
 {
   if (grepl('\\.zip$', filename))
   {
@@ -27,6 +27,6 @@ csv.reader <- function(data.file, filename, variable.name)
   assign(variable.name,
          read.csv(filename,
                   header = TRUE,
-                  sep = ','),
+                  sep = ';'),
          envir = .TargetEnv)
 }

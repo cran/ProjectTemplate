@@ -16,16 +16,17 @@
 #' \dontrun{xls.reader('example.xls', 'data/example.xls', 'example')}
 xls.reader <- function(data.file, filename, workbook.name)
 {
-  library('gdata')
+  require.package('gdata')
+
   sheets <- sheetNames(filename)
   
   for (sheet.name in sheets)
   {
-    variable.name <- paste(workbook.name, ProjectTemplate:::clean.variable.name(sheet.name), sep = ".")
+    variable.name <- paste(workbook.name, clean.variable.name(sheet.name), sep = ".")
     tryCatch(assign(variable.name,
                     read.xls(filename,
                              sheet = sheet.name),
-                    envir = .GlobalEnv),
+                    envir = .TargetEnv),
              error = function(e)
              {
                warning(paste("The worksheet", sheet.name, "didn't load correctly."))

@@ -7,27 +7,30 @@
 #'
 #' @export
 #'
+#' @seealso \code{\link{create.project}}, \code{\link{get.project}},
+#'   \code{\link{cache.project}}, \code{\link{show.project}}
+#'   
 #' @examples
 #' library('ProjectTemplate')
 #'
 #' \dontrun{load.project()}
 load.project <- function()
 {
-  project.info <- list()
+  my.project.info <- list()
 
   message('Loading project configuration')
   if (!file.exists(file.path('config', 'global.dcf')))
   {
     stop('You are missing a configuration file: config/global.dcf')
   }
-  config <- ProjectTemplate:::translate.dcf(file.path('config', 'global.dcf'))
+  config <- translate.dcf(file.path('config', 'global.dcf'))
   if (is.null(config[['libraries']]))
   {
     warning('Your configuration file is missing an entry: libraries')
   }
   config[['libraries']] <- strsplit(config[['libraries']], '\\s*,\\s*')[[1]]
-  assign('config', config, envir = .GlobalEnv)
-  project.info[['config']] <- config
+  assign('config', config, envir = .TargetEnv)
+  my.project.info[['config']] <- config
   
   if (! is.null(config[['as_factors']]) && config[['as_factors']] == 'off')
   {
@@ -38,7 +41,7 @@ load.project <- function()
   {
     message('Autoloading helper functions')
     
-    project.info[['helpers']] <- c()
+    my.project.info[['helpers']] <- c()
     
     for (helper.script in dir('lib'))
     {
@@ -54,7 +57,7 @@ load.project <- function()
         }
         message(paste(' Running helper script:', helper.script))
         source(file.path('lib', helper.script))
-        project.info[['helpers']] <- c(project.info[['helpers']], helper.script)
+        my.project.info[['helpers']] <- c(my.project.info[['helpers']], helper.script)
       }
     }
   }
@@ -68,7 +71,7 @@ load.project <- function()
     if (config[['load_libraries']] == 'on')
     {
       message('Autoloading packages')
-      project.info[['packages']] <- c()
+      my.project.info[['packages']] <- c()
       for (package.to.load in config[['libraries']])
       {
         message(paste(' Loading package:', package.to.load))
@@ -76,7 +79,7 @@ load.project <- function()
         {
           stop(paste('Failed to load package: ', package.to.load))
         }
-        project.info[['packages']] <- c(project.info[['packages']], package.to.load)
+        my.project.info[['packages']] <- c(my.project.info[['packages']], package.to.load)
       }
     }
   }
@@ -100,36 +103,36 @@ load.project <- function()
       stop('You are missing a directory: cache')
     }
     cache.files <- dir('cache')
-    project.info[['cache']] <- c()
+    my.project.info[['cache']] <- c()
     
     for (cache.file in cache.files)
     {
       filename <- file.path('cache', cache.file)
       
-      for (extension in names(ProjectTemplate:::extensions.dispatch.table))
+      for (extension in names(extensions.dispatch.table))
       {
         if (grepl(extension, cache.file, ignore.case = TRUE, perl = TRUE))
         {
-          variable.name <- ProjectTemplate:::clean.variable.name(sub(extension,
+          variable.name <- clean.variable.name(sub(extension,
                                                    '',
                                                    cache.file,
                                                    ignore.case = TRUE,
                                                    perl = TRUE))
 
           # If this variable already exists in the global environment, don't load it from cache.
-          if (variable.name %in% ls(envir = .GlobalEnv))
+          if (variable.name %in% ls(envir = .TargetEnv))
           {
             next()
           }
           
           message(paste(" Loading cached data set: ", variable.name, sep = ''))
 
-          do.call(ProjectTemplate:::extensions.dispatch.table[[extension]],
+          do.call(extensions.dispatch.table[[extension]],
                   list(cache.file,
                        filename,
                        variable.name))
           
-          project.info[['cache']] <- c(project.info[['cache']], variable.name)
+          my.project.info[['cache']] <- c(my.project.info[['cache']], variable.name)
           
           break()
         }
@@ -147,36 +150,36 @@ load.project <- function()
       stop('You are missing a directory: cache')
     }
     cache.files <- dir('cache')
-    project.info[['cache']] <- c()
+    my.project.info[['cache']] <- c()
     
     for (cache.file in cache.files)
     {
       filename <- file.path('cache', cache.file)
       
-      for (extension in names(ProjectTemplate:::extensions.dispatch.table))
+      for (extension in names(extensions.dispatch.table))
       {
         if (grepl(extension, cache.file, ignore.case = TRUE, perl = TRUE))
         {
-          variable.name <- ProjectTemplate:::clean.variable.name(sub(extension,
+          variable.name <- clean.variable.name(sub(extension,
                                                    '',
                                                    cache.file,
                                                    ignore.case = TRUE,
                                                    perl = TRUE))
 
           # If this variable already exists in the global environment, don't load it from cache.
-          if (variable.name %in% ls(envir = .GlobalEnv))
+          if (variable.name %in% ls(envir = .TargetEnv))
           {
             next()
           }
           
           message(paste(" Loading cached data set: ", variable.name, sep = ''))
 
-          do.call(ProjectTemplate:::extensions.dispatch.table[[extension]],
+          do.call(extensions.dispatch.table[[extension]],
                   list(cache.file,
                        filename,
                        variable.name))
           
-          project.info[['cache']] <- c(project.info[['cache']], variable.name)
+          my.project.info[['cache']] <- c(my.project.info[['cache']], variable.name)
           
           break()
         }
@@ -188,37 +191,52 @@ load.project <- function()
     {
       stop('You are missing a directory: data')
     }
-    data.files <- dir('data')
-    project.info[['data']] <- c()
+
+    # If recursive_loading
+    if (is.null(config[['recursive_loading']]))
+    {
+      warning('Your configuration file is missing an entry: recursive_loading')
+      config[['recursive_loading']] <- 'off'
+    }
+
+    if (config[['recursive_loading']] == 'on')
+    {
+      data.files <- dir('data', recursive = TRUE)
+    }
+    else
+    {
+      data.files <- dir('data')
+    }
+    my.project.info[['data']] <- c()
 
     for (data.file in data.files)
     {
       filename <- file.path('data', data.file)
       
-      for (extension in names(ProjectTemplate:::extensions.dispatch.table))
+      for (extension in names(extensions.dispatch.table))
       {
         if (grepl(extension, data.file, ignore.case = TRUE, perl = TRUE))
         {
-          variable.name <- ProjectTemplate:::clean.variable.name(sub(extension,
+          variable.name <- clean.variable.name(sub(extension,
                                                    '',
                                                    data.file,
                                                    ignore.case = TRUE,
                                                    perl = TRUE))
 
           # If this variable already exists in cache, don't load it from data.
-          if (variable.name %in% ls(envir = .GlobalEnv))
+          if (variable.name %in% ls(envir = .TargetEnv))
           {
             next()
           }
 
           message(paste(" Loading data set: ", variable.name, sep = ''))
 
-          do.call(ProjectTemplate:::extensions.dispatch.table[[extension]],
+          do.call(extensions.dispatch.table[[extension]],
                   list(data.file,
                        filename,
                        variable.name))
 
-          project.info[['data']] <- c(project.info[['data']], variable.name)
+          my.project.info[['data']] <- c(my.project.info[['data']], variable.name)
           
           break()
         }
@@ -228,18 +246,18 @@ load.project <- function()
 
   if (! is.null(config[['data_tables']]) && config[['data_tables']] == 'on')
   {
-    library('data.table')
+    require.package('data.table')
     
-    for (data.set in project.info[['data']])
+    for (data.set in my.project.info[['data']])
     {
       message('Converting data.frames to data.tables')
       
-      if (class(get(data.set, envir = .GlobalEnv)) == 'data.frame')
+      if (class(get(data.set, envir = .TargetEnv)) == 'data.frame')
       {
         message(paste(' Translating data.frame:', data.set))
         assign(data.set,
-               data.table(get(data.set, envir = .GlobalEnv)),
-               envir = .GlobalEnv)
+               data.table(get(data.set, envir = .TargetEnv)),
+               envir = .TargetEnv)
       }
     }
   }
@@ -268,7 +286,8 @@ load.project <- function()
   if (config[['logging']] == 'on')
   {
     message('Initializing logger')
-    library('log4r')
+    require.package('log4r')
+
     logger <- create.logger()
     if (!file.exists('logs'))
     {
@@ -276,10 +295,10 @@ load.project <- function()
     }
     logfile(logger) <- file.path('logs', 'project.log')
     level(logger) <- log4r:::INFO
-    assign('logger', logger, envir = .GlobalEnv)
+    assign('logger', logger, envir = .TargetEnv)
   }
 
-  assign('project.info', project.info, envir = .GlobalEnv)
-  #assign('project.info', project.info, envir = parent.frame())
-  #assign('project.info', project.info, envir = environment(ProjectTemplate:::create.project))
+  assign('project.info', my.project.info, envir = .TargetEnv)
+  #assign('project.info', my.project.info, envir = parent.frame())
+  #assign('project.info', my.project.info, envir = environment(create.project))
 }
