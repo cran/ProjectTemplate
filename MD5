@@ -1,11 +1,11 @@
-c5a67ffc130e70785fd6f37721b9e73b *DESCRIPTION
+97cc8ad5bcc9174903c15daf502b340e *DESCRIPTION
 521613de19c54a6b75b892e55b2fba68 *NAMESPACE
 9f7821e4cfc7be3f156cad7b1bacf5e7 *R/arff.reader.R
 c58a43ef732e3a28381cb7d66bf1ef91 *R/cache.R
 f695cfeb4e1ca6d13744162a78701f66 *R/cache.name.R
 6e62f27c368ad00b1feea601bd4649fc *R/cache.project.R
 342ed9ba7dd49b6271480b08380ed83d *R/clean.variable.name.R
-742f8c444058496f95c920177a91d9ba *R/create.project.R
+4e19b47922f5e3fd3d6b7ba4a9aaa62e *R/create.project.R
 08df6fcf5ad6071f59af1967f519f0bc *R/csv.reader.R
 7cac99dced7cd0c8b7d55b1d04d2a161 *R/csv2.reader.R
 7d22b56cb4cbf6dcb801e79455943c63 *R/db.reader.R
@@ -39,7 +39,7 @@ f83fd716e4a0516416b41f55868ecee1 *R/stub.tests.R
 4287d6b855ef8357b18681937d13054f *R/xls.reader.R
 401786999fbeab748ce85bb318ce0baf *R/xlsx.reader.R
 e7dc42c3a8260582c087d45a25041a25 *R/xport.reader.R
-d5876e4b1eb770d5e3cf2b257c7bf44f *inst/NEWS.Rd
+45eca01db5e3f87048ccc56d59a14d1e *inst/NEWS.Rd
 6568eec56052c88acb412adc1862a4e9 *inst/defaults/full.tar
 6961ca2b7ae0638f9b89d96e3c28ea14 *inst/defaults/minimal.tar
 7c4d1e82ff896d30db57f430f218defd *inst/example_data/example_01.csv
