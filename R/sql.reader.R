@@ -6,11 +6,11 @@
 #' or one specific query against any set of tables may be executed to generate
 #' a data set.
 #'
-#' queries can support string interpolation to execute code snippets. This is used
-#' to create queries that depend on data from other sources. Code delimited is @@\{...\}
+#' queries can support string interpolation to execute code snippets using mustache syntax (http://mustache.github.io). This is used
+#' to create queries that depend on data from other sources. Code delimited is \{\{...\}\}
 #'
-#' Example: query: SELECT * FROM my_table WHERE id IN (@@\{paste(ids, collapse = ',')\}).
-#' Here ids is data previously loaded into ProjectTemplate
+#' Example: query: SELECT * FROM my_table WHERE id IN (\{\{ids\}\}).
+#' Here ids is a vector previously loaded into the Global Environment through ProjectTemplate
 #'
 #' Examples of the DCF format and settings used in a .sql file are shown
 #' below:
@@ -87,7 +87,7 @@
 #' password: tiger
 #' host: heroku.postgres.url
 #' port: 1234
-#' dbname: herokudb 
+#' dbname: herokudb
 #' query: select * from emp
 #'
 #' @param data.file The name of the data file to be read.
@@ -112,7 +112,7 @@ sql.reader <- function(data.file, filename, variable.name)
     connection.info <- translate.dcf(connection_filename)
 
     # Allow .sql to override options defined in .connection
-    database.info <- modifyList(connection.info, database.info) 
+    database.info <- modifyList(connection.info, database.info)
   }
 
   if (! (database.info[['type']] %in% c('mysql', 'sqlite', 'odbc', 'postgres', 'oracle', 'jdbc', 'heroku')))
@@ -127,80 +127,77 @@ sql.reader <- function(data.file, filename, variable.name)
   # Draft code for ODBC support.
   if (database.info[['type']] == 'odbc')
   {
-    require.package('RODBC')
+    .require.package('RODBC')
 
     connection.string <- paste('DSN=', database.info[['dsn']], ';',
                                'UID=', database.info[['user']], ';',
                                'PWD=', database.info[['password']], ';',
                                'DATABASE=', database.info['dbname'],
                                sep = '')
-    connection <- odbcDriverConnect(connection.string)
-    results <- sqlQuery(connection, database.info[['query']])
-    odbcClose(connection)
+    connection <- RODBC::odbcDriverConnect(connection.string)
+    results <- RODBC::sqlQuery(connection, database.info[['query']])
+    RODBC::odbcClose(connection)
     assign(variable.name,
            results,
            envir = .TargetEnv)
     return()
   }
-  
+
   if (database.info[['type']] == 'mysql')
   {
-    require.package('RMySQL')
+    .require.package('RMySQL')
 
-    mysql.driver <- dbDriver("MySQL")
-    
+    mysql.driver <- DBI::dbDriver("MySQL")
+
     # Default value for 'port' in mysqlNewConnection is 0.
     if (is.null(database.info[['port']]))
     {
       database.info[['port']] <- 0
     }
-    
-    connection <- dbConnect(mysql.driver,
+
+    connection <- DBI::dbConnect(mysql.driver,
                             user = database.info[['user']],
                             password = database.info[['password']],
                             host = database.info[['host']],
                             dbname = database.info[['dbname']],
                             port = as.integer(database.info[['port']]),
                             unix.socket = database.info[['socket']])
-    dbGetQuery(connection, "SET NAMES 'utf8'") # Switch to utf-8 strings
+    DBI::dbGetQuery(connection, "SET NAMES 'utf8'") # Switch to utf-8 strings
   }
 
   if (database.info[['type']] == 'sqlite')
   {
-    require.package('RSQLite')
+    .require.package('RSQLite')
 
-    sqlite.driver <- dbDriver("SQLite")
+    sqlite.driver <- DBI::dbDriver("SQLite")
 
-    connection <- dbConnect(sqlite.driver,
+    connection <- DBI::dbConnect(sqlite.driver,
                             dbname = database.info[['dbname']])
   }
 
   if (database.info[['type']] == 'postgres')
   {
-    require.package('RPostgreSQL')
+    .require.package('RPostgreSQL')
 
-    mysql.driver <- dbDriver("PostgreSQL")
+    pgsql.driver <- DBI::dbDriver("PostgreSQL")
 
-    connection <- dbConnect(mysql.driver,
-                            user = database.info[['user']],
-                            password = database.info[['password']],
-                            host = database.info[['host']],
-                            dbname = database.info[['dbname']])
+    args <- intersect(names(database.info), c('user', 'password', 'host', 'dbname'))
+    connection <- do.call(DBI::dbConnect, c(list(pgsql.driver), database.info[args]))
   }
 
   if (database.info[['type']] == 'oracle')
   {
-    require.package('RMySQL')
+    .require.package('ROracle')
 
-    oracle.driver <- dbDriver("Oracle")
-    
+    oracle.driver <- DBI::dbDriver("Oracle")
+
     # Default value for 'port' in mysqlNewConnection is 0.
     if (is.null(database.info[['port']]))
     {
       database.info[['port']] <- 0
     }
-    
-    connection <- dbConnect(oracle.driver,
+
+    connection <- DBI::dbConnect(oracle.driver,
                             user = database.info[['user']],
                             password = database.info[['password']],
                             dbname = database.info[['dbname']])
@@ -208,18 +205,18 @@ sql.reader <- function(data.file, filename, variable.name)
 
   if (database.info[['type']] == 'jdbc')
   {
-    require.package('RJDBC')
+    .require.package('RJDBC')
 
     ident.quote <- NA
     if('identquote' %in% names(database.info))
        ident.quote <- database.info[['identquote']]
-    
+
     if(is.null(database.info[['classpath']])) {
       database.info[['classpath']] = ''
     }
 
-    rjdbc.driver <- JDBC(database.info[['class']], database.info[['classpath']], ident.quote)
-    connection <- dbConnect(rjdbc.driver,
+    rjdbc.driver <- RJDBC::JDBC(database.info[['class']], database.info[['classpath']], ident.quote)
+    connection <- DBI::dbConnect(rjdbc.driver,
                             database.info[['url']],
                             user = database.info[['user']],
                             password = database.info[['password']])
@@ -227,21 +224,21 @@ sql.reader <- function(data.file, filename, variable.name)
 
   if (database.info[['type']] == 'heroku')
   {
-    require.package('RJDBC')
-    
+    .require.package('RJDBC')
+
     if(is.null(database.info[['classpath']])) {
       database.info[['classpath']] <- ''
-  }
+    }
 
     database.info[['class']] <- 'org.postgresql.Driver'
-    
-    database.info[['url']] <- paste('jdbc:postgresql://', database.info[['host']], 
-        ':', database.info[['port']], 
-        '/', database.info[['dbname']], 
+
+    database.info[['url']] <- paste('jdbc:postgresql://', database.info[['host']],
+        ':', database.info[['port']],
+        '/', database.info[['dbname']],
         '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory', sep = '')
-    
-    rjdbc.driver <- JDBC(database.info[['class']], database.info[['classpath']])
-    connection <- dbConnect(rjdbc.driver,
+
+    rjdbc.driver <- RJDBC::JDBC(database.info[['class']], database.info[['classpath']])
+    connection <- DBI::dbConnect(rjdbc.driver,
                             database.info[['url']],
                             user = database.info[['user']],
                             password = database.info[['password']])
@@ -251,7 +248,7 @@ sql.reader <- function(data.file, filename, variable.name)
   # User should specify either a table name or a query to execute, but not both.
   table <- database.info[['table']]
   query <- database.info[['query']]
-  
+
   # If both a table and a query are specified, favor the query.
   if (! is.null(table) && ! is.null(query))
   {
@@ -267,34 +264,34 @@ sql.reader <- function(data.file, filename, variable.name)
     warning("Either 'table' or 'query' must be specified in a .sql file")
     return()
   }
-  
+
   if (! is.null(table) && table == '*')
   {
-    tables <- dbListTables(connection)
+    tables <- DBI::dbListTables(connection)
     for (table in tables)
     {
       message(paste('  Loading table:', table))
-      
-      data.parcel <- dbReadTable(connection,
+
+      data.parcel <- DBI::dbReadTable(connection,
                                  table,
                                  row.names = NULL)
-    
+
       assign(clean.variable.name(table),
              data.parcel,
              envir = .TargetEnv)
     }
   }
-  
+
   # If table is specified, read the whole table.
   # Othwrwise, execute the specified query.
   if (! is.null(table) && table != '*')
   {
-    if (dbExistsTable(connection, table))
+    if (DBI::dbExistsTable(connection, table))
     {
-      data.parcel <- dbReadTable(connection,
+      data.parcel <- DBI::dbReadTable(connection,
                                  table,
                                  row.names = NULL)
-      
+
       assign(variable.name,
              data.parcel,
              envir = .TargetEnv)
@@ -308,14 +305,18 @@ sql.reader <- function(data.file, filename, variable.name)
 
   if (! is.null(query))
   {
+    # Do string interpolation
+    # TODO: When whisker is updated add strict=FALSE
     if (length(grep('\\@\\{.*\\}', query)) != 0) {
-      # Do string interpolation
-      require.package('GetoptLong')
-      query <- qq(query)
+      .require.package('GetoptLong')
+      query <- GetoptLong::qq(query)
+    } else if (length(grep('\\{\\{.*\\}\\}', query))) {
+      .require.package('whisker')
+      query <- whisker::whisker.render(query, data = .GlobalEnv)
     }
-    data.parcel <- try(dbGetQuery(connection, query))
-    err <- dbGetException(connection)
-    
+    data.parcel <- try(DBI::dbGetQuery(connection, query))
+    err <- DBI::dbGetException(connection)
+
     if (class(data.parcel) == 'data.frame' && (length(err) == 0 || err$errorNum == 0))
     {
       assign(variable.name,
@@ -349,7 +350,7 @@ sql.reader <- function(data.file, filename, variable.name)
   }
 
   # Disconnect from database resources. Warn if failure.
-  disconnect.success <- dbDisconnect(connection)
+  disconnect.success <- DBI::dbDisconnect(connection)
 
   if (! disconnect.success)
   {

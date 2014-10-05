@@ -1,6 +1,6 @@
 #' Read an XBASE file with a .dbf file extension.
 #'
-#' This function will load all of the data sets stored in the specified 
+#' This function will load all of the data sets stored in the specified
 #' XBASE file into the global environment.
 #'
 #' @param data.file The name of the data file to be read.
@@ -15,9 +15,9 @@
 #' \dontrun{dbf.reader('example.dbf', 'data/example.dbf', 'example')}
 dbf.reader <- function(data.file, filename, variable.name)
 {
-  require.package('foreign')
+  .require.package('foreign')
 
   assign(variable.name,
-         read.dbf(filename),
+         foreign::read.dbf(filename),
          envir = .TargetEnv)
 }

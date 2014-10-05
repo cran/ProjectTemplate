@@ -28,10 +28,10 @@
 #'
 #' @details  If the target directory does not exist, it is created.  Otherwise,
 #'   it can only contain files and directories allowed by the merge strategy.
-#'   
+#'
 #' @seealso \code{\link{load.project}}, \code{\link{get.project}},
 #'   \code{\link{cache.project}}, \code{\link{show.project}}
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -49,7 +49,7 @@ create.project <- function(project.name = 'new-project', minimal = FALSE,
   template.path <- file.path(temp.dir, template.name)
 
   merge.strategy <- match.arg(merge.strategy)
-  if (file.exists(project.name) && file.info(project.name)$isdir) {
+  if (.is.dir(project.name)) {
     .create.project.existing(template.path, project.name, merge.strategy)
   } else
     .create.project.new(template.path, project.name)
@@ -61,9 +61,9 @@ create.project <- function(project.name = 'new-project', minimal = FALSE,
     # For time being, just copy the entire contents of defaults/* and then also copy the collated R source.
     # Seriously broken at the moment.
     e <- environment(load.project)
-    
+
     pt.contents <- ls(e)
-    
+
     for (item in pt.contents)
     {
       cat(deparse(get(item, envir = e)),
@@ -99,6 +99,9 @@ create.project <- function(project.name = 'new-project', minimal = FALSE,
   file.copy(file.path(template.path, template.files),
             project.path,
             recursive = TRUE, overwrite = FALSE)
+
+  file.copy(from = system.file('defaults/config/global.dcf', package = 'ProjectTemplate'),
+            to = file.path(project.path, 'config/global.dcf'))
 }
 
 .create.project.new <- function(template.path, project.name) {
@@ -126,6 +129,10 @@ create.project <- function(project.name = 'new-project', minimal = FALSE,
   files <- list.files(path = path, all.files = TRUE, include.dirs = TRUE)
   files <- grep("^[.][.]?$", files, value = TRUE, invert = TRUE)
   files
+}
+
+.is.dir <- function(path) {
+  file.exists(path) && file.info(path)$isdir
 }
 
 .dir.empty <- function(path) {
