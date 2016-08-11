@@ -32,6 +32,18 @@ load.project <- function(override.config = NULL)
 
   options(stringsAsFactors = config$as_factors)
 
+  if (config$load_libraries)
+  {
+    message('Autoloading packages')
+    my.project.info$packages <- c()
+    for (package.to.load in strsplit(config$libraries, '\\s*,\\s*')[[1]])
+    {
+      message(paste(' Loading package:', package.to.load))
+      require.package(package.to.load)
+      my.project.info$packages <- c(my.project.info$packages, package.to.load)
+    }
+  }
+
   if (file.exists('lib'))
   {
     message('Autoloading helper functions')
@@ -52,18 +64,6 @@ load.project <- function(override.config = NULL)
       message(paste(' Running helper script:', helper.script))
       source(file.path('lib', helper.script))
       my.project.info$helpers <- c(my.project.info$helpers, helper.script)
-    }
-  }
-
-  if (config$load_libraries)
-  {
-    message('Autoloading packages')
-    my.project.info$packages <- c()
-    for (package.to.load in strsplit(config$libraries, '\\s*,\\s*')[[1]])
-    {
-      message(paste(' Loading package:', package.to.load))
-      require.package(package.to.load)
-      my.project.info$packages <- c(my.project.info$packages, package.to.load)
     }
   }
 
@@ -226,11 +226,11 @@ load.project <- function(override.config = NULL)
 
   for (data.set in data.sets)
   {
-    if (all(class(get(data.set, envir = .TargetEnv)) == 'data.frame'))
+    if (all(class(get(data.set, envir = .TargetEnv, inherits = FALSE)) == 'data.frame'))
     {
       message(paste(' Translating data.frame:', data.set))
       assign(data.set,
-             data.table::data.table(get(data.set, envir = .TargetEnv)),
+             data.table::data.table(get(data.set, envir = .TargetEnv, inherits = FALSE)),
              envir = .TargetEnv)
     }
   }
@@ -279,6 +279,7 @@ load.project <- function(override.config = NULL)
   config
 }
 
+#' @importFrom utils compareVersion
 .check.version <- function(config, warn.migrate = TRUE) {
   package.version <- .package.version()
   version.diff <- compareVersion(config$version, package.version)
