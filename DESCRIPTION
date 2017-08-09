@@ -1,8 +1,8 @@
 Package: ProjectTemplate
 Type: Package
 Title: Automates the Creation of New Statistical Analysis Projects
-Version: 0.7
-Date: 2016-07-29
+Version: 0.8
+Date: 2017-08-02
 Authors@R: c( person("Aleksandar", "Blagotic", role = "ctb"),
     person("Diego", "Valle-Jones", role = "ctb"),
     person("Jeffrey", "Breen", role = "ctb"),
@@ -23,28 +23,29 @@ Description: Provides functions to
 License: Artistic-2.0
 LazyLoad: yes
 Depends: R (>= 2.7)
-Suggests: foreign, reshape, plyr, stringr, ggplot2, lubridate, log4r
-        (>= 0.1-5), DBI, RMySQL, RSQLite, gdata, RODBC, RJDBC, xlsx,
-        tuneR, pixmap, data.table, RPostgreSQL, GetoptLong, whisker,
-        testthat (>= 0.8)
+Suggests: foreign, reshape, plyr, digest, formatR, stringr, ggplot2,
+        lubridate, log4r (>= 0.1-5), DBI, RMySQL, RSQLite, gdata,
+        RODBC, RJDBC, xlsx, tuneR, pixmap, data.table, RPostgreSQL,
+        GetoptLong, whisker, testthat (>= 0.8)
 URL: http://projecttemplate.net
 BugReports: https://github.com/johnmyleswhite/ProjectTemplate/issues
-Collate: 'xport.reader.R' 'xlsx.reader.R' 'xls.reader.R' 'wsv.reader.R'
-        'url.reader.R' 'tsv.reader.R' 'systat.reader.R'
+Collate: 'add.config.R' 'xport.reader.R' 'xlsx.reader.R' 'xls.reader.R'
+        'wsv.reader.R' 'url.reader.R' 'tsv.reader.R' 'systat.reader.R'
         'stata.reader.R' 'require.package.R' 'sql.reader.R'
         'spss.reader.R' 'rdata.reader.R' 'r.reader.R' 'ppm.reader.R'
         'octave.reader.R' 'mtp.reader.R' 'mp3.reader.R' 'file.reader.R'
         'epiinfo.reader.R' 'dbf.reader.R' 'db.reader.R' 'csv2.reader.R'
         'csv.reader.R' 'arff.reader.R' 'preinstalled.readers.R'
         'add.extension.R' 'cache.R' 'cache.name.R' 'cache.project.R'
-        'clean.variable.name.R' 'create.project.R' 'translate.dcf.R'
-        'default.config.R' 'get.project.R' 'help.R' 'load.project.R'
-        'migrate.project.R' 'new.config.R' 'reload.project.R'
-        'run.project.R' 'show.project.R' 'stub.tests.R'
+        'clean.variable.name.R' 'clear.R' 'clear.cache.R'
+        'translate.dcf.R' 'config.R' 'create.project.R' 'get.project.R'
+        'help.R' 'list.data.R' 'load.project.R' 'migrate.project.R'
+        'project.config.R' 'reload.project.R' 'run.project.R'
+        'show.project.R' 'stopifnotproject.R' 'stub.tests.R'
         'test.project.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2016-08-10 21:24:01 UTC; kwhite
+Packaged: 2017-08-03 18:05:03 UTC; kwhite
 Author: Aleksandar Blagotic [ctb],
   Diego Valle-Jones [ctb],
   Jeffrey Breen [ctb],
@@ -59,4 +60,4 @@ Author: Aleksandar Blagotic [ctb],
   Dominik Schneider [ctb]
 Maintainer: Kenton White <jkentonwhite@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-08-11 12:26:17
+Date/Publication: 2017-08-09 04:11:27 UTC
