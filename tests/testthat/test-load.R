@@ -180,7 +180,7 @@ test_that('ignored data files are not loaded', {
   # reload the project, now with an illegal Thumbs.db
   rm(list = ls(envir = .TargetEnv), envir = .TargetEnv)
   # The Thumbs.db is not a valid SQLite database so should raise an error
-  expect_error(load.project(data_ignore = ''), "file is not a database")
+  expect_error(suppressWarnings(load.project(override.config = list(data_ignore = ''))))
 
   # reload the project, ignore *.csv
   rm(list = ls(envir = .TargetEnv), envir = .TargetEnv)
@@ -216,4 +216,66 @@ test_that('ignored data files are not loaded', {
                                 recursive_loading = TRUE))
   expect_equal(test, test_data)
   expect_false(exists("test.test", envir = .TargetEnv))
+
+  # reload the project, ignore cached var_to_cache
+  rm(list = ls(envir = .TargetEnv), envir = .TargetEnv)
+  assign("var_to_cache", test_data, envir = .TargetEnv)
+  cache("var_to_cache")
+  rm(var_to_cache, envir = .TargetEnv)
+  suppressMessages(load.project(data_ignore = 'Thumbs.db, var_to_cache'))
+  expect_false(exists("var_to_cache", envir = .TargetEnv))
+ 
+})
+
+test_that('data is loaded as data_frame', {
+        test_project <- tempfile('test_project')
+        suppressMessages(create.project(test_project))
+        on.exit(unlink(test_project, recursive = TRUE), add = TRUE)
+
+        oldwd <- setwd(test_project)
+        on.exit(setwd(oldwd), add = TRUE)
+
+        # clear the global environment
+        rm(list=ls(envir = .TargetEnv), envir = .TargetEnv)
+
+        test_data <- data.frame(Names=c("a", "b", "c"), Ages=c(20,30,40))
+        
+        # save test data as a csv in the data directory
+        write.csv(test_data, file="data/test.csv", row.names = FALSE)
+
+        config <- .new.config
+        config$tables_type <- "data_frame"
+        write.dcf(config, 'config/global.dcf')
+        
+        suppressMessages(load.project())
+
+        # and check that the loaded data from the cache is what we saved
+        expect_equal(test, test_data)
+})
+
+test_that('data is loaded as data_table', {
+        test_project <- tempfile('test_project')
+        suppressMessages(create.project(test_project))
+        on.exit(unlink(test_project, recursive = TRUE), add = TRUE)
+
+        oldwd <- setwd(test_project)
+        on.exit(setwd(oldwd), add = TRUE)
+
+        # clear the global environment
+        rm(list=ls(envir = .TargetEnv), envir = .TargetEnv)
+
+        require('data.table')
+        test_data <- data.table::data.table(data.frame(Names=c("a", "b", "c"), Ages=c(20,30,40)))
+        
+        # save test data as a csv in the data directory
+        write.csv(test_data, file="data/test.csv", row.names = FALSE)
+
+        config <- .new.config
+        config$tables_type <- "data_table"
+        write.dcf(config, 'config/global.dcf')
+        
+        suppressMessages(load.project())
+
+        # and check that the loaded data from the cache is what we saved
+        expect_equal(test, test_data)
 })

@@ -14,15 +14,15 @@ those in \code{keep} will be deleted.  This includes items beginning with \code{
 \item{keep}{A character vector of variables that should remain in the global
 environment}
 
-\item{force}{If \code{TRUE}, then variables will be deleted even if 
-specifed in \code{keep} or \code{config$sticky_variables}}
+\item{force}{If \code{TRUE}, then variables will be deleted even if
+specified in \code{keep} or \code{config$sticky_variables}}
 }
 \value{
 The variables kept and removed are reported
 }
 \description{
 This function removes specific (or all by default) named objects from the global
-environment.  If used within a \code{ProjectTemplate} project, then any variables 
+environment.  If used within a \code{ProjectTemplate} project, then any variables
 defined in the \code{config$sticky_variables} will remain.
 }
 \examples{
