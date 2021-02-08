@@ -1,7 +1,7 @@
-f0d45b1a040f1085b81ccafac9a6d397 *DESCRIPTION
+4c0d889e38ed5a6c4216d86acafdd3b5 *DESCRIPTION
 d32239bcb673463ab874e80d47fae504 *LICENSE
 8e0f8dada9306e67156a083a15f9a0a8 *NAMESPACE
-a5bb330b497d1e13eef191d183deb458 *NEWS.md
+2f93bd70c0b4173b283a862dfade01de *NEWS.md
 8036236bbf103d057ca7a701848c596d *R/add.config.R
 48ae836fe5c1f99089c90de1b607b3bb *R/add.extension.R
 546d0a73f12651714be3c50be43b2e44 *R/addins.R
@@ -25,7 +25,7 @@ c0783713c0877992f98f0172072e4ae8 *R/file.reader.R
 31ec67cd7595637cb1a93d86372848b0 *R/get.project.R
 ac59a5b26252d7ee2dbe18a405c80606 *R/help.R
 b6c274f0745f8476faa415da71e60cb1 *R/list.data.R
-f5aca8e1a3d5f3bd7e0895909aa621cf *R/load.project.R
+8b0f65ebcc2e11f437bf645997ed1bb7 *R/load.project.R
 26c7ed09b6fd5b7ce7ca000ddc123672 *R/migrate.project.R
 599d5bcedbc90b6c78e26713de9da344 *R/migrate.template.R
 4a2f6595397a01e9fb217b83e808a05e *R/mp3.reader.R
@@ -55,14 +55,14 @@ f65b6ca60b43d2362609e83a46ce6bfb *R/wsv.reader.R
 e17968d5430d84d93973205738762086 *R/xls.reader.R
 2467520aa95bd4acec305d66cc0af39a *R/xlsx.reader.R
 21e80698d9f77531da8ba9df0ab6f771 *R/xport.reader.R
-c89d9e065c827196bd89b51d1641861c *build/partial.rdb
+aa5f1b36e2897ba1c009ed4220bf85f1 *build/partial.rdb
 f66cf256cd2d8732cd032ec38803f7fa *inst/defaults/config/default.dcf
 b61012b518285e68d65b88ab7cbfcb99 *inst/defaults/config/types.dcf
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/full/README.md
 d41d8cd98f00b204e9800998ecf8427e *inst/defaults/templates/full/TODO
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/full/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/full/config/README.md
-88e5bc7f66223dbbc3813e02f2e75c80 *inst/defaults/templates/full/config/global.dcf
+1e836b9c152955f6b93a99e493ab1601 *inst/defaults/templates/full/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/full/data/README.md
 2832fcd588f8e9b1aade0aaad01aa5db *inst/defaults/templates/full/diagnostics/1.R
 af291d1ef9a67688edf66a85b950dc86 *inst/defaults/templates/full/diagnostics/README.md
@@ -84,7 +84,7 @@ f1631d44106dd27cfbddac20fe096312 *inst/defaults/templates/full/src/README.md
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/minimal/README.md
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/minimal/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/minimal/config/README.md
-88e5bc7f66223dbbc3813e02f2e75c80 *inst/defaults/templates/minimal/config/global.dcf
+1e836b9c152955f6b93a99e493ab1601 *inst/defaults/templates/minimal/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/minimal/data/README.md
 495ed04aa1595530df2085235764988f *inst/defaults/templates/minimal/munge/01-A.R
 fae6c4661578142504f387ad14fc68bc *inst/defaults/templates/minimal/munge/README.md
@@ -220,7 +220,7 @@ af68f12c41cccf02827dc03af7a7011f *tests/testthat/test-cache.R
 b029683eb3b0d060011be8ca0e73c881 *tests/testthat/test-config.R
 d84d617f0683cc4596f11cf37cf79ba4 *tests/testthat/test-create.R
 a0fbee6972427bc59e599e3975806e84 *tests/testthat/test-list.R
-76e7188fad71d9d05650a3532236102b *tests/testthat/test-load.R
+bd98311c0d39e9fc3b7d38b23793baa7 *tests/testthat/test-load.R
 b53497fd294b7de79daa680d99df67e4 *tests/testthat/test-migration.R
 fb1d411ccfd8d27c19529df571063fc2 *tests/testthat/test-override_config.R
 6d3b2b4290207f9978964d19a74333c9 *tests/testthat/test-qs.R

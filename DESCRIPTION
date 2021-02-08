@@ -1,8 +1,8 @@
 Package: ProjectTemplate
 Type: Package
 Title: Automates the Creation of New Statistical Analysis Projects
-Version: 0.10.0
-Date: 2021-01-08
+Version: 0.10.1
+Date: 2021-02-08
 Authors@R: c( person("Aleksandar", "Blagotic", role = "ctb"),
     person("Diego", "Valle-Jones", role = "ctb"),
     person("Jeffrey", "Breen", role = "ctb"),
@@ -15,7 +15,8 @@ Authors@R: c( person("Aleksandar", "Blagotic", role = "ctb"),
     person("Noah", "Lorang", role = "ctb"),
     person("Patrick", "Schalk", role = "ctb"),
     person("Dominik", "Schneider", role="ctb"),
-    person("Gerold", "Hepp", role="ctb"))
+    person("Gerold", "Hepp", role="ctb"),
+    person("Zunaira", "Jamile", role="ctb"))
 Description: Provides functions to
     automatically build a directory structure for a new R
     project. Using this structure, 'ProjectTemplate'
@@ -51,7 +52,7 @@ Collate: 'add.config.R' 'preinstalled.readers.R' 'add.extension.R'
         'xport.reader.R'
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-01-08 17:22:30 UTC; kwhite
+Packaged: 2021-02-08 21:12:23 UTC; kwhite
 Author: Aleksandar Blagotic [ctb],
   Diego Valle-Jones [ctb],
   Jeffrey Breen [ctb],
@@ -64,7 +65,8 @@ Author: Aleksandar Blagotic [ctb],
   Noah Lorang [ctb],
   Patrick Schalk [ctb],
   Dominik Schneider [ctb],
-  Gerold Hepp [ctb]
+  Gerold Hepp [ctb],
+  Zunaira Jamile [ctb]
 Maintainer: Kenton White <jkentonwhite@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-01-08 19:30:06 UTC
+Date/Publication: 2021-02-08 22:40:08 UTC
