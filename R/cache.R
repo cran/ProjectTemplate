@@ -21,7 +21,7 @@ NULL
 #'  be saved.  If the CODE parameter is defined, it is evaluated and saved, otherwise
 #'  the variable with that name in the global environment is used.
 #' @param CODE A sequence of R statements enclosed in \code{\{..\}} which produce the object to be
-#' cached.
+#' cached.  Requires suggested package formatR 
 #' @param depends A character vector of other global environment objects that the CODE
 #' depends upon. Caching will be forced if those objects have changed since last caching
 #' @param ... Additional arguments passed on to \code{\link{save}} or optionally
@@ -483,14 +483,12 @@ cache <- function(variable=NULL, CODE=NULL, depends=NULL,  ...)
 #' @rdname internal.cached.variables
 .cached.variables <- function() {
   cache_format <- .cache.format()
+  cache_ext <- cache_format[["regex_exts"]]["data"]
 
   # get all relevant cache files
-  cache_files <- list.files("cache", pattern = paste(
-    cache_format[["regex_exts"]],
-    collapse = "|"
-  ))
+  cache_files <- list.files("cache", pattern = cache_ext)
   # and return the variable names
-  unique(sub("^(.*)\\..*$", "\\1", cache_files))
+  sub(sprintf("^(.*)%s", cache_ext), "\\1", cache_files)
 }
 
 
