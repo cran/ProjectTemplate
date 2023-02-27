@@ -1,8 +1,8 @@
 Package: ProjectTemplate
 Type: Package
 Title: Automates the Creation of New Statistical Analysis Projects
-Version: 0.10.2
-Date: 2021-07-30
+Version: 0.10.3
+Date: 2023-02-27
 Authors@R: c( person("Aleksandar", "Blagotic", role = "ctb"),
     person("Diego", "Valle-Jones", role = "ctb"),
     person("Jeffrey", "Breen", role = "ctb"),
@@ -26,7 +26,7 @@ License: GPL-3 | file LICENSE
 Language: en-US
 LazyLoad: yes
 Encoding: UTF-8
-Depends: R (>= 2.7), digest, tibble
+Depends: R (>= 2.7), digest, tibble, methods
 Suggests: foreign, feather, reshape, plyr, formatR, qs, stringr,
         ggplot2, lubridate, log4r (>= 0.1-5), DBI, RMySQL, RSQLite,
         gdata, RODBC, RJDBC, readxl, xlsx, tuneR, pixmap, data.table,
@@ -37,8 +37,9 @@ Collate: 'add.config.R' 'preinstalled.readers.R' 'add.extension.R'
         'addins.R' 'arff.reader.R' 'get.project.R' 'cache.R'
         'cache.name.R' 'cache.project.R' 'clean.variable.name.R'
         'clear.R' 'clear.cache.R' 'translate.dcf.R' 'config.R'
-        'create.project.R' 'create.template.R' 'csv.reader.R'
-        'csv2.reader.R' 'db.reader.R' 'dbf.reader.R' 'epiinfo.reader.R'
+        'create.project.R' 'create.project.rstudio.R'
+        'create.template.R' 'csv.reader.R' 'csv2.reader.R'
+        'db.reader.R' 'dbf.reader.R' 'epiinfo.reader.R'
         'feather.reader.R' 'file.reader.R' 'help.R' 'list.data.R'
         'load.project.R' 'migrate.project.R' 'migrate.template.R'
         'mp3.reader.R' 'mtp.reader.R' 'octave.reader.R' 'ppm.reader.R'
@@ -51,7 +52,7 @@ Collate: 'add.config.R' 'preinstalled.readers.R' 'add.extension.R'
         'xport.reader.R'
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-07-30 16:45:17 UTC; kwhite
+Packaged: 2023-02-27 21:16:21 UTC; kwhite
 Author: Aleksandar Blagotic [ctb],
   Diego Valle-Jones [ctb],
   Jeffrey Breen [ctb],
@@ -68,4 +69,4 @@ Author: Aleksandar Blagotic [ctb],
   Zunaira Jamile [ctb]
 Maintainer: Kenton White <jkentonwhite@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-07-31 11:50:16 UTC
+Date/Publication: 2023-02-27 21:42:34 UTC

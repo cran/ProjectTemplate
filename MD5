@@ -1,7 +1,7 @@
-df6ce8321bfaf0be089ff626e0e3555d *DESCRIPTION
+460b812143001ae2aa79a65e87b7b2ba *DESCRIPTION
 d32239bcb673463ab874e80d47fae504 *LICENSE
-aa599769037b4cb96203dfc20c09df57 *NAMESPACE
-6fb487bec9fa3791020950a69c6963b7 *NEWS.md
+842ccb83bfba25448e9f61d1b27887f6 *NAMESPACE
+0286eec57ebbd5b1b813c94ea039e587 *NEWS.md
 8036236bbf103d057ca7a701848c596d *R/add.config.R
 48ae836fe5c1f99089c90de1b607b3bb *R/add.extension.R
 546d0a73f12651714be3c50be43b2e44 *R/addins.R
@@ -12,8 +12,9 @@ d341c3344438cbe7d06c25272b5e1002 *R/cache.name.R
 17226c0446a4326ef73046e2a31d8b79 *R/clean.variable.name.R
 767e515cf9cbf656fe496bed98beb9ff *R/clear.R
 2f93d06477fa3e36d4b55b1361caad08 *R/clear.cache.R
-00578238f7c16cacfb6fd08d60d4437f *R/config.R
+b952aaf677b355d222ff3221b5ab11b5 *R/config.R
 278a253263e2bc2c3a1b9637d3e88f7d *R/create.project.R
+a44f4adfaf6e24e4135caaa541182e0f *R/create.project.rstudio.R
 3fdcd0bb880413f43915e22aa3516bc5 *R/create.template.R
 7afd10dbcfee261acd22dbec9f18938f *R/csv.reader.R
 de31dca512d93346864610e53bf02925 *R/csv2.reader.R
@@ -42,10 +43,10 @@ ed15bcdae5d6af508e3a73f0ea608983 *R/project.config.R
 6a3bb311aa0bd5052ad5891ba106333f *R/run.project.R
 7974ce32f8c75c5bcb5e0849e99ab736 *R/show.project.R
 cc2b49e71afcc47e2ea51c85d7a1690d *R/spss.reader.R
-4aa45dfac4ac7c57b63ed506a5916e84 *R/sql.reader.R
+9c7547fd57f997af60209a491973af7a *R/sql.reader.R
 0657fe8c77e4ff7bb675af275a8affa9 *R/stata.reader.R
 cc33ec5ffea1df9cf44a5eb99fc408e3 *R/stopifnotproject.R
-bf80edf7b4353066c815ec29f87de92e *R/stub.tests.R
+33b35e900f7beb9e68e5763d51d53f4e *R/stub.tests.R
 f2df0c256756be454bc50557261aa1da *R/systat.reader.R
 470e69b65b61971caa96ba21b5eab8fd *R/test.project.R
 72d91224268254dae085aad9834bb689 *R/translate.dcf.R
@@ -55,14 +56,14 @@ f65b6ca60b43d2362609e83a46ce6bfb *R/wsv.reader.R
 e17968d5430d84d93973205738762086 *R/xls.reader.R
 2467520aa95bd4acec305d66cc0af39a *R/xlsx.reader.R
 21e80698d9f77531da8ba9df0ab6f771 *R/xport.reader.R
-43cbdc38831e07d7b6457cc68ab47830 *build/partial.rdb
+f2185740bf2e7d6df942906c6a72f284 *build/partial.rdb
 f66cf256cd2d8732cd032ec38803f7fa *inst/defaults/config/default.dcf
 b61012b518285e68d65b88ab7cbfcb99 *inst/defaults/config/types.dcf
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/full/README.md
 d41d8cd98f00b204e9800998ecf8427e *inst/defaults/templates/full/TODO
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/full/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/full/config/README.md
-fd2e4a879608e4b520dd7a8c0880d799 *inst/defaults/templates/full/config/global.dcf
+cbf6f572369caaf637879f074fb69ca4 *inst/defaults/templates/full/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/full/data/README.md
 2832fcd588f8e9b1aade0aaad01aa5db *inst/defaults/templates/full/diagnostics/1.R
 af291d1ef9a67688edf66a85b950dc86 *inst/defaults/templates/full/diagnostics/README.md
@@ -84,7 +85,7 @@ f1631d44106dd27cfbddac20fe096312 *inst/defaults/templates/full/src/README.md
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/minimal/README.md
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/minimal/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/minimal/config/README.md
-fd2e4a879608e4b520dd7a8c0880d799 *inst/defaults/templates/minimal/config/global.dcf
+cbf6f572369caaf637879f074fb69ca4 *inst/defaults/templates/minimal/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/minimal/data/README.md
 495ed04aa1595530df2085235764988f *inst/defaults/templates/minimal/munge/01-A.R
 fae6c4661578142504f387ad14fc68bc *inst/defaults/templates/minimal/munge/README.md
@@ -137,6 +138,7 @@ a8862fd692d890e60b1aca2190ecbd16 *inst/example_data/example_44.rds
 38245d0d362a3af4b2f9511ea460ca81 *inst/example_data/foo.reader.R
 3f56c41364af1477d17ed82d3efd9cda *inst/example_data/sqlite3_examples.sql
 d9401b28b4d81054b80cd18dd33c130c *inst/rstudio/addins.dcf
+9c49506e4814a28b32ae2f37a88892a1 *inst/rstudio/templates/project/projecttemplate.dcf
 8cc5db591c582b5fa6c4fa14a0383e17 *man/ProjectTemplate.Rd
 df256f35acdaf608e19d6314449d5440 *man/add.config.Rd
 89edb92c2922f51f9da28d3516dd2e2c *man/add.extension.Rd
@@ -223,7 +225,7 @@ d84d617f0683cc4596f11cf37cf79ba4 *tests/testthat/test-create.R
 aceb3aa3d8d6181d2feeb2a0064006e5 *tests/testthat/test-load.R
 b53497fd294b7de79daa680d99df67e4 *tests/testthat/test-migration.R
 fb1d411ccfd8d27c19529df571063fc2 *tests/testthat/test-override_config.R
-14fe6341fceb5e17331299f2d16cd1e0 *tests/testthat/test-qs.R
+af5ebdb6f4068ba83e561040bbcd1b84 *tests/testthat/test-qs.R
 7984593a4471d5a863ca509647ad912f *tests/testthat/test-readers.R
 7895799e931be4083cf7ba3fe9ac7128 *tests/testthat/test-reload.R
 e22b92e44dbf5d788e0f4ad11cffc8b4 *tests/testthat/test-require.R
