@@ -1,7 +1,8 @@
-460b812143001ae2aa79a65e87b7b2ba *DESCRIPTION
+6a1eca2ab3777a1b940f24b4bb07bb65 *DESCRIPTION
 d32239bcb673463ab874e80d47fae504 *LICENSE
-842ccb83bfba25448e9f61d1b27887f6 *NAMESPACE
-0286eec57ebbd5b1b813c94ea039e587 *NEWS.md
+ddb27973466bf962f0deba31480ac08b *NAMESPACE
+73f8568c00d2accdbe72c0a60623552d *NEWS.md
+4183fd27620bf36fdc58190628d1c38e *R/ProjectTemplate-package.R
 8036236bbf103d057ca7a701848c596d *R/add.config.R
 48ae836fe5c1f99089c90de1b607b3bb *R/add.extension.R
 546d0a73f12651714be3c50be43b2e44 *R/addins.R
@@ -24,7 +25,6 @@ b7caad2ad424570af83ff9a88cfe015d *R/epiinfo.reader.R
 ddb0d9cff05eb992d748791b863ec5d6 *R/feather.reader.R
 c0783713c0877992f98f0172072e4ae8 *R/file.reader.R
 31ec67cd7595637cb1a93d86372848b0 *R/get.project.R
-ac59a5b26252d7ee2dbe18a405c80606 *R/help.R
 b6c274f0745f8476faa415da71e60cb1 *R/list.data.R
 a3a8882512e50279f1455fe6ead341dd *R/load.project.R
 26c7ed09b6fd5b7ce7ca000ddc123672 *R/migrate.project.R
@@ -56,14 +56,14 @@ f65b6ca60b43d2362609e83a46ce6bfb *R/wsv.reader.R
 e17968d5430d84d93973205738762086 *R/xls.reader.R
 2467520aa95bd4acec305d66cc0af39a *R/xlsx.reader.R
 21e80698d9f77531da8ba9df0ab6f771 *R/xport.reader.R
-f2185740bf2e7d6df942906c6a72f284 *build/partial.rdb
+5ca162808a2265f3c7c96f771097f6f2 *build/partial.rdb
 f66cf256cd2d8732cd032ec38803f7fa *inst/defaults/config/default.dcf
 b61012b518285e68d65b88ab7cbfcb99 *inst/defaults/config/types.dcf
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/full/README.md
 d41d8cd98f00b204e9800998ecf8427e *inst/defaults/templates/full/TODO
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/full/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/full/config/README.md
-cbf6f572369caaf637879f074fb69ca4 *inst/defaults/templates/full/config/global.dcf
+41c4629d654f54cb6be64d3074de338d *inst/defaults/templates/full/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/full/data/README.md
 2832fcd588f8e9b1aade0aaad01aa5db *inst/defaults/templates/full/diagnostics/1.R
 af291d1ef9a67688edf66a85b950dc86 *inst/defaults/templates/full/diagnostics/README.md
@@ -85,7 +85,7 @@ f1631d44106dd27cfbddac20fe096312 *inst/defaults/templates/full/src/README.md
 4503d621defd2add0dcc9db87ed77318 *inst/defaults/templates/minimal/README.md
 b1f3717c1a11db97b554cfdc120e4df4 *inst/defaults/templates/minimal/cache/README.md
 ebf87a3053eb2ccc21840d1618b9b6aa *inst/defaults/templates/minimal/config/README.md
-cbf6f572369caaf637879f074fb69ca4 *inst/defaults/templates/minimal/config/global.dcf
+41c4629d654f54cb6be64d3074de338d *inst/defaults/templates/minimal/config/global.dcf
 a326fd69f3ba3da9534273d09c9b8ee9 *inst/defaults/templates/minimal/data/README.md
 495ed04aa1595530df2085235764988f *inst/defaults/templates/minimal/munge/01-A.R
 fae6c4661578142504f387ad14fc68bc *inst/defaults/templates/minimal/munge/README.md
@@ -139,7 +139,7 @@ a8862fd692d890e60b1aca2190ecbd16 *inst/example_data/example_44.rds
 3f56c41364af1477d17ed82d3efd9cda *inst/example_data/sqlite3_examples.sql
 d9401b28b4d81054b80cd18dd33c130c *inst/rstudio/addins.dcf
 9c49506e4814a28b32ae2f37a88892a1 *inst/rstudio/templates/project/projecttemplate.dcf
-8cc5db591c582b5fa6c4fa14a0383e17 *man/ProjectTemplate.Rd
+8ba38b3c76ee9ce29a6cbf9c94c31bdb *man/ProjectTemplate-package.Rd
 df256f35acdaf608e19d6314449d5440 *man/add.config.Rd
 89edb92c2922f51f9da28d3516dd2e2c *man/add.extension.Rd
 41b24183ee673d3a1e66a559039a4155 *man/cache.Rd
@@ -196,7 +196,7 @@ cf8f8d4b228cb3dc69b996106cc7343a *man/load.project.Rd
 a1b3c669842ce243d5230524662dcea8 *man/loadproject_addin.Rd
 ef35cf159d92de9d8b2e33f1779af2ec *man/migrate.project.Rd
 4219e60347621205dc3b4ad1a5e06182 *man/migrate.template.Rd
-d8e4c3876a3b55817ccd64c36d7f7d39 *man/preinstalled.readers.Rd
+c963ea63f4cef8b15db09057022d4786 *man/preinstalled.readers.Rd
 52ac37dd2fc249b950c815033e75eb35 *man/project.config.Rd
 1605576a489ee235df97abc71e1c3263 *man/reload.project.Rd
 99ba1b3d4e73a51a5787ebc35fac2f47 *man/reloadproject_addin.Rd
