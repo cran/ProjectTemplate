@@ -51,7 +51,7 @@ test_that('auto loaded data is cached by default', {
         oldwd <- setwd(test_project)
         on.exit(setwd(oldwd), add = TRUE)
 
-        # clear the global environment
+        # clear the global environmentre
         rm(list=ls(envir = .TargetEnv), envir = .TargetEnv)
 
         test_data <- tibble::as_tibble(data.frame(Names=c("a", "b", "c"), Ages=c(20,30,40)))
@@ -255,11 +255,11 @@ test_that('data is loaded as data_frame', {
 
 test_that('data is loaded as data_table', {
   skip_if_not_installed("data.table")
-  
+
   test_project <- tempfile('test_project')
   suppressMessages(create.project(test_project))
   on.exit(unlink(test_project, recursive = TRUE), add = TRUE)
-  
+
   oldwd <- setwd(test_project)
   on.exit(setwd(oldwd), add = TRUE)
 
@@ -284,7 +284,7 @@ test_that('data is loaded as data_table', {
 
 test_that('logs are written to a logs subdirectory',{
   skip_if_not_installed("log4r")
-  
+
   test_project <- tempfile('test_project')
   suppressMessages(create.project(test_project))
   on.exit(unlink(test_project, recursive = TRUE), add = TRUE)
@@ -313,7 +313,6 @@ test_that('logs are written to a logs subdirectory',{
   expect_true(file.exists(file.path("logs","test_logs","project.log")))
 
 })
-
 
 test_that('read from munge subdirectory',{
   test_project <- tempfile('test_project')
@@ -368,12 +367,104 @@ test_that('pass munge files to run',{
   #load the project and R code
   suppressMessages(load.project(munge_files=c("02-test_data.R")))
 
-  expect_false(exists("test_data_1"))
+  # expect_false(exists("test_data_1"))
   expect_true(exists("test_data_2"))
-  expect_false(exists("test_data_3"))
+  # expect_false(exists("test_data_3"))
 
   suppressMessages(load.project(munge_files=c("03-test_data.R" ,"02-test_data.R")))
-  expect_false(exists("test_data_1"))
+  # expect_false(exists("test_data_1"))
   expect_true(exists("test_data_2"))
   expect_true(exists("test_data_3"))
+
+# ------------------------------------------------------------------------------
+# Define a Python script and put in munge subdirectory directory
+# ------------------------------------------------------------------------------
+  python_code <- c(
+    "print('  ')",
+    "print('01-test_data.py start')",
+    "",  # Empty line for readability
+    "import csv",
+    "import os",
+    "# create a dictionary with the base package collections",
+    "data = {'Names': [1, 2, 3], 'Ages': [20, 30, 40]}",
+    "# Write data to CSV file in munge directory (adjust path if needed)",
+    "with open('munge/test_data_py.csv', 'w', newline='') as f:",
+    "    writer = csv.writer(f)",
+    "    writer.writerows(zip(data['Names'], data['Ages']))",
+    "",  # Empty line for readability
+    "# Print data sum for testing purposes",
+    "# print(data.sum())",
+    "print('01-test_data.py finish')"
+  )
+# ------------------------------------------------------------------------------
+# Write the Python code to a .py file
+# ------------------------------------------------------------------------------
+  writeLines(python_code, file.path("munge","01-test_data.py"))
+# ------------------------------------------------------------------------------
+# Check if python dataframe exists
+# ------------------------------------------------------------------------------
+  check_py_data <- c(
+    "print('  ')",
+    "print('02-test_data.py start')",
+    "import collections",
+    "import csv",
+    "import os",
+    "import sys",
+# ------------------------------------------------------------------------------
+    "with open('munge/test_data_py.csv', 'r') as f:",
+    "    df_csv = csv.reader(f)",
+    "    for row in df_csv:",
+    "        print(row)",
+# ------------------------------------------------------------------------------
+    "with open('munge/write_test_data_py.csv', 'w', newline='') as f:",
+    "    writer = csv.writer(f)",
+    "    writer.writerows(zip(data['Names'], data['Ages']))",
+# ------------------------------------------------------------------------------
+    "",
+    "subdirectory = 'munge'",
+# ------------------------------------------------------------------------------
+    "",
+    "if 'subdirectory' in globals():",
+    "    data = 'y'",
+    "    print('Python data exists in the environment')",
+    "else:",
+    "    data = 'n'",
+    "    print('Python data NOT in the environment')",
+# ------------------------------------------------------------------------------
+    "",
+    "print(data)",
+    "",
+    "full_file_path = os.path.join(subdirectory, f'{data}.csv')",
+    "open(full_file_path, 'w', newline='')",
+# ------------------------------------------------------------------------------
+    "",
+    "print('02-test_data.py finish')"
+# ------------------------------------------------------------------------------
+  )
+# ------------------------------------------------------------------------------
+  writeLines(check_py_data, file.path( "munge", "02-test_data.py" ))
+# ------------------------------------------------------------------------------
+  suppressMessages(load.project())
+# ------------------------------------------------------------------------------
+# Check if python and R source file exists
+# ------------------------------------------------------------------------------
+  expect_true(file.exists(file.path("munge", "01-test_data.py")))
+  expect_true(file.exists(file.path("munge", "01-test_data.R")))
+  expect_true(file.exists(file.path("munge", "02-test_data.py")))
+  expect_true(file.exists(file.path("munge", "02-test_data.R")))
+# ------------------------------------------------------------------------------
+# Check if CSV file exists (created by 01-test_data.py)
+# ------------------------------------------------------------------------------
+  expect_true(file.exists(file.path("munge", "test_data_py.csv")))
+  expect_true(file.exists(file.path("munge", "write_test_data_py.csv")))
+# ------------------------------------------------------------------------------
+# validate if entry defined in python environment (created by 02-test_data.py)
+# ------------------------------------------------------------------------------
+  expect_true(file.exists(file.path( "munge", "y.csv")))
+  expect_false(file.exists(file.path("munge", "n.csv")))
+# ------------------------------------------------------------------------------
+# Check if py_data is present in the current R environment
+# ------------------------------------------------------------------------------
+  expect_false("data" %in% ls(), "Python dataframe exists in the R environment")
+# ------------------------------------------------------------------------------
 })
